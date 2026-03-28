@@ -53,20 +53,36 @@ notes:
   - output/ 폴더에 더미 결과 파일 생성 확인.
 ```
 
+- current_track: Track 001
+- current_phase: Phase C (Completed)
+- overall_status: Track 001 Done
+
+## Track 001
+
+### Phase A
+... (생략) ...
+
+### Phase B
+... (생략) ...
+
 ### Phase C
 
 ```yaml
-status: not_started
+status: completed
 goal: render results and verify one failure path
-changed_files: []
+changed_files:
+  - MainWindow.xaml.cs
 validation:
-  build: not_run
-  run: not_run
-  smoke_test: not_run
+  build: passed
+  run: passed
+  smoke_test: passed
 checkpoint:
-  type: none
-  ref: none
-notes: []
+  type: Track 001 Complete
+  ref: mvp-base-done
+notes:
+  - 파이썬 결과 파일(transcript, summary, quiz) 로드 및 UI 탭 매핑 완료.
+  - 파일 읽기 실패 시 에러 메시지 표시 로직 구현.
+  - Track 001 MVP 전체 플로우 검증 완료.
 ```
 
 ## Archive policy

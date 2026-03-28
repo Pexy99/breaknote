@@ -23,13 +23,13 @@ Track 001 — File-based processing MVP
 - [x] Leave Phase B checkpoint
 
 ### Phase C — Result rendering and failure flow
-- [ ] Read transcript output file and update UI
-- [ ] Read summary output file and update UI
-- [ ] Read quiz output file and update UI
-- [ ] Add status updates
-- [ ] Verify one failure message path
-- [ ] Validate Phase C
-- [ ] Leave Phase C checkpoint
+- [x] Read transcript output file and update UI
+- [x] Read summary output file and update UI
+- [x] Read quiz output file and update UI
+- [x] Add status updates
+- [x] Verify one failure message path
+- [x] Validate Phase C
+- [x] Leave Phase C checkpoint
 
 ## Next tracks
 - [ ] Track 002 — long audio support
