@@ -51,6 +51,24 @@ Validation:
 Checkpoint:
 - Create a commit and update progress.
 
+#### Phase C — Real-time Logging & Transcript UI
+Tasks:
+- Add a Log tab to the WPF UI (`MainWindow.xaml`).
+- Wire the Python subprocess `StandardOutput` and `StandardError` to display in real-time in the new Log tab.
+- Use the `-u` flag on the Python subprocess to ensure output is not buffered.
+- Add `verbose=True` to the Whisper transcribe call.
+- Parse real-time `[00:00.000 --> 00:05.000]` Whisper outputs using Regex and append the text string immediately to the Transcript tab.
+
+Acceptance criteria:
+- User can see live output from Python (such as model loading and transcription status) in the Log tab without buffering delay.
+- Sentences appear one by one inside the Transcript tab as soon as they are inferred by the model.
+
+Validation:
+- Run the app, select a file, click Process, and verify the Log tab populates sequentially and Transcript text updates progressively.
+
+Checkpoint:
+- Update docs/tasks.md and docs/progress.md
+
 ## Next
 ### Track 003 — Local LLM / Summary & Quiz Integration
 Possible scope:

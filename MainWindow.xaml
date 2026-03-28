@@ -31,6 +31,9 @@
             <TabItem Header="Quiz">
                 <TextBox x:Name="TxtQuiz" AcceptsReturn="True" IsReadOnly="True" VerticalScrollBarVisibility="Auto" Padding="10" TextWrapping="Wrap"/>
             </TabItem>
+            <TabItem Header="Log">
+                <TextBox x:Name="TxtLog" AcceptsReturn="True" IsReadOnly="True" VerticalScrollBarVisibility="Auto" Background="#1E1E1E" Foreground="#D4D4D4" FontFamily="Consolas" Padding="10" TextWrapping="Wrap"/>
+            </TabItem>
         </TabControl>
 
         <!-- Bottom Bar: Status -->
