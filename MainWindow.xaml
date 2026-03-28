@@ -1,0 +1,40 @@
+<Window x:Class="BreakNote.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BreakNote"
+        mc:Ignorable="d"
+        Title="BreakNote" Height="450" Width="800">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Top Bar: File Selection -->
+        <DockPanel Grid.Row="0" Margin="0,0,0,10">
+            <Button x:Name="BtnSelectFile" Content="Select Audio File" Click="BtnSelectFile_Click" Padding="10,5" DockPanel.Dock="Left"/>
+            <TextBox x:Name="TxtFilePath" IsReadOnly="True" Margin="10,0,0,0" VerticalContentAlignment="Center" Text="No file selected"/>
+        </DockPanel>
+
+        <!-- Content Area: Result Tabs -->
+        <TabControl Grid.Row="1">
+            <TabItem Header="Transcript">
+                <TextBox x:Name="TxtTranscript" AcceptsReturn="True" IsReadOnly="True" VerticalScrollBarVisibility="Auto" Padding="10" TextWrapping="Wrap"/>
+            </TabItem>
+            <TabItem Header="Summary">
+                <TextBox x:Name="TxtSummary" AcceptsReturn="True" IsReadOnly="True" VerticalScrollBarVisibility="Auto" Padding="10" TextWrapping="Wrap"/>
+            </TabItem>
+            <TabItem Header="Quiz">
+                <TextBox x:Name="TxtQuiz" AcceptsReturn="True" IsReadOnly="True" VerticalScrollBarVisibility="Auto" Padding="10" TextWrapping="Wrap"/>
+            </TabItem>
+        </TabControl>
+
+        <!-- Bottom Bar: Status -->
+        <StatusBar Grid.Row="2" Margin="0,10,0,0">
+            <TextBlock x:Name="StatusLabel" Text="Ready"/>
+        </StatusBar>
+    </Grid>
+</Window>

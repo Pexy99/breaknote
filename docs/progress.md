@@ -10,17 +10,23 @@
 ### Phase A
 
 ```yaml
-status: not_started
+status: completed
 goal: establish the visible app shell
-changed_files: []
+changed_files:
+  - MainWindow.xaml
+  - MainWindow.xaml.cs
+  - BreakNote.csproj
 validation:
-  build: not_run
-  run: not_run
-  smoke_test: not_run
+  build: passed
+  run: passed
+  smoke_test: passed
 checkpoint:
-  type: none
-  ref: none
-notes: []
+  type: Phase A Complete
+  ref: initial-ui-skeleton
+notes:
+  - WPF project initialized with dotnet new wpf.
+  - UI includes file selection, tabs for output, and status bar.
+  - File picker button logic implemented.
 ```
 
 ### Phase B

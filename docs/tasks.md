@@ -4,15 +4,15 @@
 Track 001 — File-based processing MVP
 
 ### Phase A — UI skeleton
-- [ ] Create main window layout
-- [ ] Add file picker button
-- [ ] Add selected file path text
-- [ ] Add transcript panel
-- [ ] Add summary panel
-- [ ] Add quiz panel
-- [ ] Add status label
-- [ ] Validate Phase A
-- [ ] Leave Phase A checkpoint
+- [x] Create main window layout
+- [x] Add file picker button
+- [x] Add selected file path text
+- [x] Add transcript panel
+- [x] Add summary panel
+- [x] Add quiz panel
+- [x] Add status label
+- [x] Validate Phase A
+- [x] Leave Phase A checkpoint
 
 ### Phase B — Processing integration
 - [ ] Define Python script interface
