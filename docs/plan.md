@@ -2,115 +2,68 @@
 
 ## Now
 
-### Track 001 — File-based processing MVP
+### Track 002 — Local STT Integration (Whisper)
 Goal:
-- User can select one audio file and see transcript, summary, and quiz in the app.
+- Replace the mock processing script with a real speech-to-text engine (OpenAI Whisper) to generate actual transcripts from audio files.
 
 Included:
-- main UI skeleton
-- subprocess integration
-- result display
-- basic failure handling
+- openai-whisper package setup in `.venv`
+- `ffmpeg` dependency handling (documentation or automatic check)
+- `process.py` updates to run Whisper transcription
+- Output real transcript to `transcript.txt`
 
 Excluded:
-- chunking
-- real-time capture
-- settings UI
-- history UI
+- Long audio chunking (memory management for huge files)
+- Real LLM integration for Summary and Quiz (keep these as mocks for this track)
+- UI progress bar for Whisper inference mapping
 
-#### Phase A — UI skeleton
+#### Phase A — Python STT environment setup
 Tasks:
-- create main window layout
-- add file picker button
-- add selected file path display
-- add transcript panel
-- add summary panel
-- add quiz panel
-- add status label
+- Create `requirements.txt` with `openai-whisper` (and `torch`)
+- Install dependencies into `.venv`
+- Ensure `ffmpeg` is available on the path or document how to install it.
 
 Acceptance criteria:
-- project builds
-- app launches
-- main window renders correctly
-- file picker UI is visible
+- `requirements.txt` exists
+- Python environment can import `whisper` without errors
 
 Validation:
-- dotnet build
-- run app and verify main window opens
-- verify required UI elements are present
+- Run `python -c "import whisper"` in `.venv`
 
 Checkpoint:
-- create a commit or explicit checkpoint note
-- update docs/tasks.md
-- update docs/progress.md
+- Update docs/tasks.md and docs/progress.md
 
-#### Phase B — Processing integration
+#### Phase B — Real Transcription implementation
 Tasks:
-- define Python script interface
-- call Python from C#
-- pass input file path
-- receive output file paths or known output locations
-- handle subprocess exit codes
+- Update `scripts/process.py` to load a small Whisper model (e.g., `base` or `small`).
+- Pass the input file to Whisper and generate the actual text.
+- Save the Whisper output to `output/transcripts/transcript.txt`.
+- Keep the `summary` and `quiz` generation as mock for now.
 
 Acceptance criteria:
-- app can launch the processing script
-- script receives the selected file path
-- output files are produced or a clear failure is reported
+- Processing an audio file generates a real transcript.
+- Terminal/process output shows model loading and transcribing status.
 
 Validation:
-- dotnet build
-- run app with one sample file
-- verify subprocess starts
-- verify expected output files are created
+- Run the WPF app, select a real audio file (e.g., short 10-second test), click Process.
+- Real transcript is shown in Transcript tab.
 
 Checkpoint:
-- create a commit or explicit checkpoint note
-- update docs/tasks.md
-- update docs/progress.md
-
-#### Phase C — Result rendering and failure flow
-Tasks:
-- load transcript output into UI
-- load summary output into UI
-- load quiz output into UI
-- show status updates
-- show one clear failure path
-
-Acceptance criteria:
-- transcript panel is populated
-- summary panel is populated
-- quiz panel is populated
-- one expected failure path shows a useful message
-
-Validation:
-- dotnet build
-- run app with sample file
-- verify transcript, summary, and quiz appear
-- simulate one failure and verify message
-
-Checkpoint:
-- create a commit or explicit checkpoint note
-- update docs/tasks.md
-- update docs/progress.md
+- Create a commit and update progress.
 
 ## Next
-### Track 002 — Long audio support
+### Track 003 — Local LLM / Summary & Quiz Integration
+Possible scope:
+- Connect to local LLM or API to generate real summaries based on the transcript.
+
+### Track 004 — Long audio support
 Possible scope:
 - chunk processing
 - per-chunk outputs
 - merged display strategy
-- basic chunk progress feedback
 
-### Track 003 — Usability improvements
+### Track 005 — Usability improvements
 Possible scope:
 - retry flow
-- output folder shortcut
-- better status and logs
-- lightweight settings
-
-## Later
-- system audio capture workflow
-- semi-automatic chunking rules
-- review mode / quiz retry mode
-- export format improvements
-- smarter orchestration
+- progress status parsing
+- lightweight settings (e.g., select Whisper model size)

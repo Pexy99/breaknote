@@ -1,39 +1,27 @@
 # Task Board
 
 ## Active track
-Track 001 — File-based processing MVP
+Track 002 — Local STT Integration (Whisper)
 
-### Phase A — UI skeleton
-- [x] Create main window layout
-- [x] Add file picker button
-- [x] Add selected file path text
-- [x] Add transcript panel
-- [x] Add summary panel
-- [x] Add quiz panel
-- [x] Add status label
+### Phase A — Python STT environment setup
+- [x] Create `requirements.txt` with `openai-whisper`
+- [x] Install dependencies into `.venv`
+- [x] Check/Document `ffmpeg` requirement
 - [x] Validate Phase A
 - [x] Leave Phase A checkpoint
 
-### Phase B — Processing integration
-- [x] Define Python script interface
-- [x] Add subprocess launch in C#
-- [x] Pass selected file path
-- [x] Handle subprocess failure path
-- [x] Validate Phase B
-- [x] Leave Phase B checkpoint
-
-### Phase C — Result rendering and failure flow
-- [x] Read transcript output file and update UI
-- [x] Read summary output file and update UI
-- [x] Read quiz output file and update UI
-- [x] Add status updates
-- [x] Verify one failure message path
-- [x] Validate Phase C
-- [x] Leave Phase C checkpoint
+### Phase B — Real Transcription implementation
+- [ ] Update `scripts/process.py` to use Whisper
+- [ ] Load Whisper model and process input audio
+- [ ] Save actual text to `transcript.txt`
+- [ ] Keep summary and quiz generation as mock
+- [ ] Validate Phase B (Run app, check transcript)
+- [ ] Leave Phase B checkpoint
 
 ## Next tracks
-- [ ] Track 002 — long audio support
-- [ ] Track 003 — usability improvements
+- [ ] Track 003 — Local LLM / Summary & Quiz Integration
+- [ ] Track 004 — Long audio support
+- [ ] Track 005 — Usability improvements
 
 ## Archive policy
 - Move completed detailed task lists to archive/tasks/ once the track is stable.
