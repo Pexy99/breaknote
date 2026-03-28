@@ -15,20 +15,17 @@ Track 001 — File-based processing MVP
 - [x] Leave Phase A checkpoint
 
 ### Phase B — Processing integration
-- [ ] Define Python script interface
-- [ ] Add subprocess launch in C#
-- [ ] Pass selected file path
-- [ ] Read transcript output file
-- [ ] Read summary output file
-- [ ] Read quiz output file
-- [ ] Handle subprocess failure path
-- [ ] Validate Phase B
-- [ ] Leave Phase B checkpoint
+- [x] Define Python script interface
+- [x] Add subprocess launch in C#
+- [x] Pass selected file path
+- [x] Handle subprocess failure path
+- [x] Validate Phase B
+- [x] Leave Phase B checkpoint
 
 ### Phase C — Result rendering and failure flow
-- [ ] Update transcript UI
-- [ ] Update summary UI
-- [ ] Update quiz UI
+- [ ] Read transcript output file and update UI
+- [ ] Read summary output file and update UI
+- [ ] Read quiz output file and update UI
 - [ ] Add status updates
 - [ ] Verify one failure message path
 - [ ] Validate Phase C

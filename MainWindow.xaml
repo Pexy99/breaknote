@@ -16,6 +16,7 @@
         <!-- Top Bar: File Selection -->
         <DockPanel Grid.Row="0" Margin="0,0,0,10">
             <Button x:Name="BtnSelectFile" Content="Select Audio File" Click="BtnSelectFile_Click" Padding="10,5" DockPanel.Dock="Left"/>
+            <Button x:Name="BtnProcess" Content="Process" Click="BtnProcess_Click" IsEnabled="False" Padding="10,5" DockPanel.Dock="Right" Margin="10,0,0,0"/>
             <TextBox x:Name="TxtFilePath" IsReadOnly="True" Margin="10,0,0,0" VerticalContentAlignment="Center" Text="No file selected"/>
         </DockPanel>
 

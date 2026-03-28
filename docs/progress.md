@@ -32,17 +32,25 @@ notes:
 ### Phase B
 
 ```yaml
-status: not_started
+status: completed
 goal: connect the WPF app to the local processing script
-changed_files: []
+changed_files:
+  - MainWindow.xaml
+  - MainWindow.xaml.cs
+  - scripts/process.py
+  - .venv/
 validation:
-  build: not_run
-  run: not_run
-  smoke_test: not_run
+  build: passed
+  run: passed
+  smoke_test: passed
 checkpoint:
-  type: none
-  ref: none
-notes: []
+  type: Phase B Complete
+  ref: python-integration-done
+notes:
+  - Python venv (가상환경) 생성 및 연동 완료.
+  - 별도 scripts/process.py를 통해 처리 시뮬레이션 구현.
+  - C#에서 가상환경의 python.exe를 호출하여 오디오 파일 경로 전달 성공.
+  - output/ 폴더에 더미 결과 파일 생성 확인.
 ```
 
 ### Phase C
