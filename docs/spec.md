@@ -45,6 +45,7 @@ Primary user:
 - show basic error messages
 
 ### Nice-to-have
+- automatic selection of relevant lecture materials (PDF/PPTX) from local sync folder
 - chunk-based processing for long audio
 - processing history list
 - output folder shortcut

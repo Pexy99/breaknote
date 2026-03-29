@@ -1,2 +1,5 @@
 openai-whisper
 setuptools-rust
+pymupdf
+python-pptx
+scikit-learn

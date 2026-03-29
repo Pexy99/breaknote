@@ -40,13 +40,44 @@ public partial class MainWindow : Window
         }
     }
 
+    private void BtnSelectSyncFolder_Click(object sender, RoutedEventArgs e)
+    {
+        using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
+        {
+            dialog.Description = "Select the synced lecture materials folder";
+            dialog.UseDescriptionForTitle = true;
+            
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                TxtSyncFolder.Text = dialog.SelectedPath;
+            }
+        }
+    }
+
     private async void BtnProcess_Click(object sender, RoutedEventArgs e)
     {
         string inputPath = TxtFilePath.Text;
+        string syncFolder = TxtSyncFolder.Text.Trim();
         if (string.IsNullOrEmpty(inputPath) || !File.Exists(inputPath))
         {
-            MessageBox.Show("Please select a valid file first.");
+            System.Windows.MessageBox.Show("Please select a valid audio file first.");
             return;
+        }
+
+        if (string.IsNullOrEmpty(syncFolder) || syncFolder == "Sync folder path..." || !Directory.Exists(syncFolder))
+        {
+            var result = System.Windows.MessageBox.Show(
+                "No valid 'Sync Folder' selected. Reference material retrieval will be skipped.\n\n" +
+                "Do you want to proceed with audio transcription only?",
+                "Missing Lecture Materials",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+
+            if (result == MessageBoxResult.No)
+            {
+                return;
+            }
+            syncFolder = ""; // Ensure we pass empty string to script
         }
 
         // Reset previous results
@@ -61,14 +92,14 @@ public partial class MainWindow : Window
 
         try
         {
-            await RunProcessingTask(inputPath);
+            await RunProcessingTask(inputPath, syncFolder);
             await LoadResultsAsync();
             StatusLabel.Text = "Processing complete! Results loaded.";
         }
         catch (System.Exception ex)
         {
             StatusLabel.Text = "Error during processing.";
-            MessageBox.Show($"Error: {ex.Message}");
+            System.Windows.MessageBox.Show($"Error: {ex.Message}");
         }
         finally
         {
@@ -118,7 +149,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private Task RunProcessingTask(string inputPath)
+    private Task RunProcessingTask(string inputPath, string syncFolder)
     {
         var tcs = new TaskCompletionSource<bool>();
 
@@ -135,16 +166,25 @@ public partial class MainWindow : Window
             scriptPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "scripts/process.py");
         }
 
+        string args = $"-u \"{scriptPath}\" \"{inputPath}\"";
+        if (!string.IsNullOrWhiteSpace(syncFolder))
+        {
+            args += $" \"{syncFolder}\"";
+        }
+
         ProcessStartInfo start = new ProcessStartInfo
         {
             FileName = venvPath,
-            Arguments = $"-u \"{scriptPath}\" \"{inputPath}\"",
+            Arguments = args,
             WorkingDirectory = File.Exists(venvPath) ? projectRoot : AppDomain.CurrentDomain.BaseDirectory,
             UseShellExecute = false,
             RedirectStandardOutput = true,
             RedirectStandardError = true,
+            StandardOutputEncoding = Encoding.UTF8,
+            StandardErrorEncoding = Encoding.UTF8,
             CreateNoWindow = true
         };
+        start.EnvironmentVariables["PYTHONIOENCODING"] = "utf-8";
 
         Process? process = new Process { StartInfo = start, EnableRaisingEvents = true };
 

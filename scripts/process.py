@@ -1,7 +1,9 @@
 import sys
 import os
+import datetime
 import whisper
 import logging
+from retrieval import retrieve_materials
 
 # Configure logging
 LOG_DIR = "logs"
@@ -41,13 +43,13 @@ def setup_ffmpeg_path():
                         logger.info(f"Added FFmpeg to PATH: {bin_path}")
                         break
 
-def process_audio(input_file):
+def process_audio(input_file, sync_folder=""):
     # Ensure ffmpeg is visible
     setup_ffmpeg_path()
     
-    logger.info(f"Loading Whisper model (medium)...")
-    # Load model (medium: balanced speed and accuracy for Korean)
-    model = whisper.load_model("medium")
+    logger.info(f"Loading Whisper model (base)...")
+    # Load model (base: fast for iteration and local testing)
+    model = whisper.load_model("base")
     
     logger.info(f"Transcribing audio file: {input_file} (Language: Korean)")
     # Run transcription
@@ -65,6 +67,18 @@ def process_audio(input_file):
     )
     actual_transcript = result["text"].strip()
     
+    attached_text = ""
+    if sync_folder and os.path.exists(sync_folder):
+        logger.info("Starting Auto-Selection of Lecture Materials...")
+        file_stat = os.stat(input_file)
+        audio_date_str = datetime.datetime.fromtimestamp(file_stat.st_mtime).strftime('%Y-%m-%d')
+        
+        materials = retrieve_materials(sync_folder, audio_date_str, actual_transcript)
+        for m in materials:
+            attached_text += f"\n--- Source: {m['filename']} ---\n{m['text'][:500]}...\n"
+    else:
+        logger.warning("No valid sync folder provided. Skipping material selection.")
+        
     # Create base output directory
     output_base = "output"
     dirs = ["transcripts", "summaries", "quizzes"]
@@ -76,10 +90,17 @@ def process_audio(input_file):
     base_name = os.path.splitext(file_name)[0]
     
     # Real transcript + Mock summary/quiz
+    summary_mock = f"# Summary of {file_name}\n\n- (Mock) Point 1 from AI logic\n- (Mock) Point 2 from AI logic\n- (Mock) Point 3 from AI logic\n"
+    quiz_mock = f"## Quiz for {file_name}\n\n1. (Mock) What is the subject?\n   - A) Math\n   - B) Science\n   - C) Other\n"
+    
+    if attached_text:
+        summary_mock += f"\n\n## (Mock) Attached Context Used:\n{attached_text}"
+        quiz_mock += f"\n\n## (Mock) Attached Context Used:\n{attached_text}"
+
     outputs = {
         "transcripts/transcript.txt": actual_transcript,
-        "summaries/summary.md": f"# Summary of {file_name}\n\n- (Mock) Point 1 from AI logic\n- (Mock) Point 2 from AI logic\n- (Mock) Point 3 from AI logic",
-        "quizzes/quiz.md": f"## Quiz for {file_name}\n\n1. (Mock) What is the subject?\n   - A) Math\n   - B) Science\n   - C) Other"
+        "summaries/summary.md": summary_mock,
+        "quizzes/quiz.md": quiz_mock
     }
     
     for path, content in outputs.items():
@@ -92,17 +113,19 @@ def process_audio(input_file):
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        logger.error("Usage: python process.py <input_file_path>")
+        logger.error("Usage: python process.py <input_file_path> [sync_folder]")
         sys.exit(1)
         
     input_path = sys.argv[1]
+    sync_folder = sys.argv[2] if len(sys.argv) > 2 else ""
+    
     # Simple check for file existence
     if not os.path.exists(input_path):
         logger.error(f"Error: File not found at {input_path}")
         sys.exit(1)
 
     try:
-        process_audio(input_path)
+        process_audio(input_path, sync_folder)
     except Exception as e:
         logger.exception(f"Unexpected error: {str(e)}")
         sys.exit(1)

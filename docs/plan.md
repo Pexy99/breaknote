@@ -69,18 +69,85 @@ Validation:
 Checkpoint:
 - Update docs/tasks.md and docs/progress.md
 
-## Next
-### Track 003 — Local LLM / Summary & Quiz Integration
-Possible scope:
-- Connect to local LLM or API to generate real summaries based on the transcript.
+### Track 003 — Auto-Selection of Lecture Materials (Reference Augmentation)
+Goal:
+- Automatically select the most relevant lecture materials (PDF/PPTX) for the current lecture from a synced local folder using a two-stage retrieval pipeline, without requiring perfect metadata or manual selection.
 
-### Track 004 — Long audio support
+Included:
+- Candidate generation (Phase A): Rules-based folder and filename filtering.
+- Relevance scoring (Phase B): Content-based ranking via TF-IDF / Cosine Similarity.
+- Pipeline integration (Phase C): Attach matched texts for later LLM generation.
+- Evaluation (Phase D): Tune heuristics against sample data.
+
+Excluded:
+- Pure semantic reranking with embeddings (future path).
+- Direct Microsoft Graph/API integration (MVP relies on local synced folders).
+
+#### Phase A — Candidate generation
+Tasks:
+- Parse folder structure of a designated local material root.
+- Implement heuristic filters (date-range folder proximity, filename keyword overlap, modification bias).
+- Collect and return top N candidate files (PDF/PPTX).
+
+Acceptance criteria:
+- Algorithm correctly narrows down a large synced folder into a small (<10) pool of plausible files without crashing.
+
+Validation:
+- Unit test function on a mock folder tree.
+
+Checkpoint:
+- Update docs.
+
+#### Phase B — Text extraction and ranking
+Tasks:
+- Extract textual content from candidate PDFs and PPTXs.
+- Build transcription query from the first few minutes of STT output.
+- Compute TF-IDF vectorization and cosine similarity between query and candidates.
+- Apply weighted scoring algorithm (folder + filename + content score).
+
+Acceptance criteria:
+- Candidates are properly ranked without taking an unreasonable amount of time.
+
+Validation:
+- Script logs final scores of candidate files correctly.
+
+Checkpoint:
+- Update docs.
+
+#### Phase C — Pipeline Integration
+Tasks:
+- Attach selected top 1~3 documents text output to the final pipeline artifact.
+- Implement fallback (proceed audio-only if confidence is too low).
+- Integrate WPF parameter for the synced local folder path.
+- **[Refined]** Implement Yes/No alert dialog fallback when sync folder is empty, instead of hard blocking.
+- **[Undocumented Fix]** Use Windows Forms `FolderBrowserDialog` for actual UI directory picking instead of manual text entry.
+- **[Undocumented Fix]** Force UTF-8 encoding on standard output/error to prevent `cp949` crashes during subprocess Python calls.
+
+Acceptance criteria:
+- The app handles materials dynamically alongside STT.
+- Users can easily pick paths with a native dialog.
+- The app warns users when running without materials but allows them to proceed.
+
+Validation:
+- End-to-end processing app test with local files.
+
+#### Phase D — Evaluation
+Tasks:
+- Test on real lecture sessions.
+- Tune weights and thresholds for TF-IDF vs filenames.
+
+## Next
+### Track 004 — Local LLM / Summary & Quiz Integration
+Possible scope:
+- Connect to local LLM or API to generate real summaries based on the transcript and attached lecture materials.
+
+### Track 005 — Long audio support
 Possible scope:
 - chunk processing
 - per-chunk outputs
 - merged display strategy
 
-### Track 005 — Usability improvements
+### Track 006 — Usability improvements
 Possible scope:
 - retry flow
 - progress status parsing

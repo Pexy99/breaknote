@@ -1,77 +1,72 @@
 # Progress Log
 
 ## Active track summary
-- current_track: Track 002
+- current_track: Track 003
 - current_phase: None
-- overall_status: Track 002 code implementation is complete. Python STT, real-time logging, un-buffered output, and real-time transcript streaming are functional. Awaiting final user confirmation in WPF to close Track 002.
+- overall_status: Track 003 is fully completed and validated. Automatic lecture material selection based on folder proximity and TF-IDF content similarity is functional.
 
-## Track 002 — Local STT Integration (Whisper)
+## Track 003 — Auto-Selection of Lecture Materials
 
 ### Phase A
-
 ```yaml
 status: completed
-goal: Python STT environment setup
+goal: Candidate generation
 changed_files:
   - requirements.txt
-  - .venv/ (updated)
+  - scripts/retrieval.py (new)
+  - scripts/test_retrieval.py (validation)
 validation:
-  import_whisper: passed
-  ffmpeg_check: passed
+  unit_test: passed (test_retrieval.py)
 checkpoint:
   type: Phase A Complete
-  ref: whisper-env-ready
+  ref: candidate-gen-ready
 notes:
-  - winget을 통해 시스템에 ffmpeg 설치 완료.
-  - requirements.txt에 openai-whisper 추가 및 .venv에 설치 완료.
-  - 가상환경에서 whisper 라이브러리 정상 로드 확인.
+  - 의존성 라이브러리(PyMuPDF, python-pptx, scikit-learn) 설치 완료.
+  - 정규식을 활용하여 N월 및 MMDD 폴더 내 pdf, pptx 탐색 로직 작성.
 ```
 
 ### Phase B
-
 ```yaml
 status: completed
-goal: Real Transcription implementation
+goal: Text extraction and ranking
 changed_files:
-  - scripts/process.py
+  - scripts/retrieval.py
 validation:
-  build: passed
-  run: passed
-  smoke_test: passed
+  logs_check: passed (User verified TF-IDF ranking in logs)
 checkpoint:
   type: Phase B Complete
-  ref: whisper-integrated
+  ref: ranking-logic-ready
 notes:
-  - scripts/process.py에 whisper 라이브러리 연동 완료.
-  - medium 모델을 사용하여 한국어 포함 다국어 음성 인식 지원.
-  - 실제 오디오 파일에서 추출된 텍스트를 transcript.txt에 저장하도록 수정.
-  - 요약 및 퀴즈는 모델 연동 전까지 더미 유지.
+  - PDF/PPTX의 최대 10페이지 추출 로직 구현.
+  - Whisper transcript 쿼리와 코사인 유사도(TF-IDF) 매칭 후 상위 3개 선별 로직(Threshold 0.05) 반영.
 ```
 
 ### Phase C
-
 ```yaml
 status: completed
-goal: Real-time Logging & Transcript UI
+goal: Pipeline Integration
 changed_files:
+  - scripts/process.py
   - MainWindow.xaml
   - MainWindow.xaml.cs
-  - scripts/process.py
 validation:
-  build: passed
-  run: passed
-  live_logging: passed
-  live_transcript: passed
+  e2e_run: passed (User verified folder dialog and processing flow)
 checkpoint:
   type: Phase C Complete
-  ref: realtime-transcript-ui
+  ref: integration-complete
 notes:
-  - WPF TabControl에 Log 탭을 추가하고 비동기 이벤트(OutputDataReceived) 실시간 연동.
-  - process.py에서 whisper 모델에 `verbose=True` 옵션 추가 및 MainWindow.xaml.cs 내 ProcessStartInfo에 `-u` 플래그 적용 (Python stdout 버퍼링 해제).
-  - C# 정규식(Regex)을 사용하여 Whisper의 타임스탬프 문장을 캡처하고, 문장이 나오는 즉시 Transcript 탭에 실시간 작성되도록 조치.
+  - WPF 화면에 `[Select Sync Folder]` 버튼/텍스트 박스 신설.
+  - Windows Forms의 `FolderBrowserDialog`를 사용하여 실제 폴더 선택 창 구현.
+  - 폴더 미지정 시 강제 차단 대신 **Yes/No 선택형 경고창(Alert)**을 띄우는 예외 처리(Fallback) 적용.
+  - process.py에서 `syncFolder` Argument 수신 및 `retrieve_materials` 호출 적용.
 ```
 
 ## Recently Completed Tracks
+
+### Track 002 — Local STT Integration (Whisper)
+- Status: Completed
+- Goal: Real transcription implementation with Whisper Base/Medium model, real-time unbuffered log streaming.
+- Highlights: Process.py updated, WPF Log tab added, streaming Regex implemented, final validation passed.
 
 ### Track 001 — File-based processing MVP
 - Status: Completed

@@ -1,36 +1,39 @@
 # Task Board
 
 ## Active track
-Track 002 — Local STT Integration (Whisper)
+Track 003 — Auto-Selection of Lecture Materials
 
-### Phase A — Python STT environment setup
-- [x] Create `requirements.txt` with `openai-whisper`
-- [x] Install dependencies into `.venv`
-- [x] Check/Document `ffmpeg` requirement
-- [x] Validate Phase A
+### Phase A — Candidate generation
+- [x] Parse folder structure & collect candidate files (.pdf, .pptx)
+- [x] Implement date/folder and filename keyword heuristics
+- [x] Validate Phase A filtering logic (scripts/test_retrieval.py)
 - [x] Leave Phase A checkpoint
 
-### Phase B — Real Transcription implementation
-- [x] Update `scripts/process.py` to use Whisper
-- [x] Load Whisper model and process input audio
-- [x] Save actual text to `transcript.txt`
-- [x] Keep summary and quiz generation as mock
-- [ ] Validate Phase B (Run app, check transcript)
-- [ ] Leave Phase B checkpoint
+### Phase B — Text extraction and ranking
+- [x] Extract text from PDF/PPTX
+- [x] Build transcript query from STT output
+- [x] Compute TF-IDF similarity and rank files
+- [x] Validate Phase B ranking logs
+- [x] Leave Phase B checkpoint
 
-### Phase C — Real-time Logging & Transcript UI
-- [x] Add Log tab to `MainWindow.xaml`
-- [x] Implement real-time stdout/err text append in `MainWindow.xaml.cs`
-- [x] Add `-u` flag to Python invocation to fix buffering issues
-- [x] Add `verbose=True` to Whisper call
-- [x] Implement Regex parsing to append real-time text to Transcript tab
-- [x] Validate Phase C (Live feedback and Transcript updates work)
+### Phase C — Pipeline integration
+- [x] Attach selected material text to summary/quiz payload
+- [x] Add threshold fallback behavior
+- [x] Add WPF/Settings option for Synced Material Root
+- [x] Fix CP949 encoding crash (Force UTF-8 subprocess)
+- [x] Add Windows Forms FolderBrowserDialog for path selection
+- [x] Implement Yes/No fallback alert when sync folder is empty
+- [x] Validate Phase C end-to-end integration
 - [x] Leave Phase C checkpoint
 
+### Phase D — Evaluation
+- [x] Test on real lecture sessions
+- [x] Tune weights and thresholds
+
 ## Next tracks
-- [ ] Track 003 — Local LLM / Summary & Quiz Integration
-- [ ] Track 004 — Long audio support
-- [ ] Track 005 — Usability improvements
+- [ ] Track 004 — Local LLM / Summary & Quiz Integration
+- [ ] Track 005 — Long audio support
+- [ ] Track 006 — Usability improvements
 
 ## Archive policy
 - Move completed detailed task lists to archive/tasks/ once the track is stable.
